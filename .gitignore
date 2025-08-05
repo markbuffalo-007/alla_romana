@@ -1,0 +1,72 @@
+# ─────────────────────────────
+# 1. JetBrains / PyCharm
+# ─────────────────────────────
+.idea/
+*.iml
+# If you DO want to share inspections or code-style settings, uncomment:
+#!.idea/inspectionProfiles
+#!.idea/codeStyles
+
+# ─────────────────────────────
+# 2. Virtual-environment folders
+# ─────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+# Pipenv / Poetry
+Pipfile.lock
+poetry.lock
+
+# ─────────────────────────────
+# 3. Python byte-code & caches
+# ─────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# ─────────────────────────────
+# 4. Test & coverage artifacts
+# ─────────────────────────────
+htmlcov/
+.tox/
+.nox/
+.coverage*
+coverage.xml
+nosetests.xml
+*.cover
+
+# ─────────────────────────────
+# 5. Build / distribution output
+# ─────────────────────────────
+build/
+dist/
+wheelhouse/
+.eggs/
+*.egg-info/
+*.egg
+sdist/
+pip-wheel-metadata/
+
+# ─────────────────────────────
+# 6. Runtime logs & misc
+# ─────────────────────────────
+*.log
+logs/
+*.pot
+*.mo
+
+# ─────────────────────────────
+# 7. Environment & secret files
+# ─────────────────────────────
+.env            # generic dotenv
+.env.*          # variant dotenvs (.env.dev, .env.prod, …)
+
+# ─────────────────────────────
+# 8. OS-specific cruft
+# ─────────────────────────────
+.DS_Store
+Thumbs.db

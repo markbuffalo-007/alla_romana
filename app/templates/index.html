@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+  <h1>{{ title }}</h1>
+
+  <h2>Some items rendered by Jinja2:</h2>
+  <ul>
+    {% for fruit in items %}
+      <li>{{ fruit }}</li>
+    {% endfor %}
+  </ul>
+
+  <footer>
+    <small>FastAPI &middot; Jinja2 &middot; {{ request.scope['client'][0] }}</small>
+  </footer>
+</body>
+</html>
