@@ -43,7 +43,6 @@ nosetests.xml
 # 5. Build / distribution output
 # ─────────────────────────────
 build/
-dist/
 wheelhouse/
 .eggs/
 *.egg-info/
