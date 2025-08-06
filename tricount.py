@@ -105,7 +105,11 @@ if __name__ == '__main__':
         ("Luca", 8.0, ["Luca", "Valentino"], "Birra (8 €)"),
         ("Valentino", 16.0, ["Antonio", "Luca", "Valentino"], "Bombette (16 €)"),
         ("Luca", 16.0, ["Antonio", "Luca", "Valentino"], "Bruschette con capocollo (16 €)"),
-        ("Luca", 38.8, ["Antonio", "Luca", "Valentino"], "Pedaggio ritorno (38,80 €)"),
+        ("Antonio", 13.5, ["Antonio", "Valentino"], "Birra e patatine Porto Cesario"),
+        ("Antonio", 18.5, ["Antonio", "Luca", "Valentino"], "Aperitivo Skafè al Casotto (frutta pessima)"),
+        ("Antonio", 65, ["Antonio", "Luca", "Valentino"], "Benzina andata/ritorno"),
+        ("Antonio", 47, ["Antonio", "Valentino"], "Pranzo Punta Prosciutto"),
+        ("Antonio", 38.8, ["Antonio", "Luca", "Valentino"], "Pedaggio ritorno (38,80 €)"),
     ]
 
     net = calculate_balances(expenses)

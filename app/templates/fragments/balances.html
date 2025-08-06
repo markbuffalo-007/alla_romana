@@ -1,0 +1,14 @@
+<div class="space-y-3 px-4 pb-6">
+  {% for person, balance in net.items() %}
+  {# pick the right colour for the amount #}
+  {% set balance_class = "text-green-600" if balance >= 0 else "text-red-500" %}
+    <div class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-700/80 shadow">
+      <div class="flex items-center space-x-3">
+        <div>
+          <p class="font-medium capitalize">{{ person }}</p>
+        </div>
+      </div>
+      <p class="font-semibold {{ balance_class }}">{{ "%.2f"|format(balance) }} €</p>
+    </div>
+  {%- endfor %}
+</div>

@@ -1,0 +1,16 @@
+<div class="space-y-3 px-4 pb-6">
+  {%- for payer, amount, beneficiaries, description in expenses %}
+    <div class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-700/80 shadow">
+      <div class="flex items-center space-x-3">
+        <div class="text-2xl">{{ icon_for(description) }}</div>
+        <div>
+          <p class="font-medium capitalize">{{ description }}</p>
+          <p class="text-xs text-white/70">
+            Paid by {{ 'me' if payer == current_user else payer }}
+          </p>
+        </div>
+      </div>
+      <p class="font-semibold">{{ amount | round(2) }} €</p>
+    </div>
+  {%- endfor %}
+</div>
