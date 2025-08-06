@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>{{ settings.title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='dist/output.css') }}">
     <script src="{{ url_for('static', path='dist/htmx.min.js') }}"></script>
+
+    <style>
+    /* move the pill when the second radio is active */
+    #tab-balances:checked ~ .slider{
+      transform:translateX(100%);
+    }
+    </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-800 via-blue-600 to-blue-500 flex items-center justify-center px-4 py-12 text-white">
+<body class="{{ 'min-h-screen flex justify-center px-4 py-12 text-white ' + settings.background }}">
 
   {# ------------------------------------------------------------------ #}
   {#  Compute totals – only `expenses`, `trip_name`, and `current_user`  #}
@@ -32,22 +39,38 @@
         <h1 class="mt-3 text-xl font-semibold">{{ trip_name }}</h1>
 
         <!-- Faux-tabs -->
-        <div class="mt-4 flex rounded-full bg-white/10 p-1 text-sm font-medium">
-          <button class="flex-1 py-1 rounded-full bg-white/25"
-                  type="submit"
-                  hx-get="/expenses"
-                  hx-target="#card"
-                  hx-swap="innerHTML">
-            Expenses
-          </button>
-          <button class="flex-1 py-1 rounded-full hover:bg-white/15 transition"
-                  type="submit"
-                  hx-get="/balances"
-                  hx-target="#card"
-                  hx-swap="innerHTML">
-            Balances
-          </button>
-        </div>
+        <form hx-get="/tab" hx-target="#card" hx-trigger="change" hx-swap="innerHTML">
+          <nav class="relative  select-none mt-4 flex rounded-full bg-white/10 p-1 text-sm font-medium"
+               aria-label="Finance sections">
+
+            <input type="hidden" name="bucket" value="{{ bucket }}">
+            <input type="hidden" name="payer" value="{{ current_user }}">
+
+            <!-- Expenses (default) -->
+            <input  type="radio" id="tab-expenses" name="tab" value="expenses"
+                    class="peer absolute h-0 w-0 opacity-0" checked>
+            <label for="tab-expenses"
+                   class="z-10 flex-1 cursor-pointer rounded-full py-2 text-center font-semibold
+                          text-white/70 transition-colors peer-checked:text-white">
+              Expenses
+            </label>
+
+            <!-- Balances -->
+            <input  type="radio" id="tab-balances" name="tab" value="balances"
+                    class="peer absolute h-0 w-0 opacity-0">
+            <label for="tab-balances"
+                   class="z-10 flex-1 cursor-pointer rounded-full py-2 text-center font-semibold
+                          text-white/70 transition-colors peer-checked:text-white">
+              Balances
+            </label>
+
+            <!-- sliding pill -->
+            <span aria-hidden="true"
+                  class="slider absolute inset-y-1 left-1 w-[calc(50%-0.25rem)]
+                         rounded-full bg-white/20 backdrop-blur
+                         transition-transform duration-300"></span>
+          </nav>
+        </form>
 
         <!-- Key figures -->
         <div class="mt-5 grid grid-cols-2 text-sm gap-4">
