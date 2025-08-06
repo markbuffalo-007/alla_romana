@@ -6,7 +6,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.database import get_bucket
-from app.icon import icon_for
+from app.web.gradient import gradients
+from app.web.icon import icon_for
 
 # -------------------------------------------------
 # Create / configure the FastAPI application
@@ -27,14 +28,6 @@ app.mount(
 # Context
 # -------------------------------------------------
 
-def _gradients(name: str):
-    options = {
-        'metal': 'bg-gradient-to-r from-slate-500 to-slate-800',
-        'verbena': 'bg-gradient-to-r from-violet-600 to-indigo-600',
-        'standard': 'bg-gradient-to-br from-blue-800 via-blue-600 to-blue-500'
-    }
-    return options.get(name) if options.get(name) else options['standard']
-
 def _context(request: Request, bucket: str, payer: str):
     expenses, net, settlements = get_bucket(bucket)
 
@@ -42,7 +35,7 @@ def _context(request: Request, bucket: str, payer: str):
         "request": request,
         "settings": {
             "title": "Alla Romana",
-            "background": _gradients('standard')
+            "background": gradients('standard')
         },
         "bucket": bucket,
         "expenses": expenses,

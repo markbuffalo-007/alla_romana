@@ -1,0 +1,23 @@
+<div>
+    <h2 class="text-white text-2xl font-bold mb-4 px-2">Settlements</h2>
+
+    {% for debtor, creditor, amount in settlements %}
+    <div class="bg-slate-800/60 p-5 rounded-xl shadow-lg mb-4">
+        <div class="flex justify-between items-center text-white font-semibold font-medium">
+            <span>{{ debtor }}</span>
+
+            <!-- Arrow Right Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300 mx-2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+
+            <span>{{ creditor }}</span>
+        </div>
+        <div class="text-center font-bold text-white mt-2">
+            {{ "%.2f"|format(amount) }} €
+        </div>
+    </div>
+    {% endfor %}
+
+</div>

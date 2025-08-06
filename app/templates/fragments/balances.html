@@ -11,4 +11,6 @@
       <p class="font-semibold {{ balance_class }}">{{ "%.2f"|format(balance) }} €</p>
     </div>
   {%- endfor %}
+
+  {% include "fragments/settlements.html" %}
 </div>
