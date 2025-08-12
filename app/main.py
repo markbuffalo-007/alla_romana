@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Optional, List
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -34,19 +35,19 @@ def _base_context(request: Request):
         "request": request,
         "settings": {
             "title": "Alla Romana",
-            "background": gradients('standard')
+            "background": gradients('holly')
         }
     }
 
-def _context(request: Request, bucket: str, payer: str):
-    expenses, net, settlements = get_bucket(bucket)
+def _context(request: Request):
+    expenses, net, settlements, users = get_bucket(request.path_params.get('bucket'))
 
     result = {
         "bucket": bucket,
         "expenses": expenses,
         "net": net,
         "settlements": settlements,
-        "current_user": payer,
+        "users": users,
         "icon_for": icon_for,
     }
     result |= _base_context(request)
@@ -55,16 +56,28 @@ def _context(request: Request, bucket: str, payer: str):
 # -------------------------------------------------
 # Routes
 # -------------------------------------------------
-@app.get("/bucket/{bucket}/payer/{payer}", response_class=HTMLResponse)
-async def read_root(request: Request, bucket: str, payer: str):
-    return templates.TemplateResponse("index.html", _context(request, bucket, payer))
+@app.get("/bucket/{bucket}/user/{user}", response_class=HTMLResponse)
+async def bucket(request: Request):
+    return templates.TemplateResponse("/new/index.html", _context(request))
 
-@app.get("/tab", response_class=HTMLResponse)
-async def balances(request: Request, tab: str, bucket: str, payer: str):
-    if tab == 'expenses':
-        return templates.TemplateResponse("/fragments/expenses.html", _context(request, bucket, payer))
-    if tab == 'balances':
-        return templates.TemplateResponse("/fragments/balances.html", _context(request, bucket, payer))
+@app.get("/bucket/{bucket}/user/{user}/add", response_class=HTMLResponse)
+async def bucket(request: Request):
+    return templates.TemplateResponse("/new/edit.html", _context(request))
+
+@app.post("/bucket/{bucket}/user/{user}/add", response_class=HTMLResponse)
+async def bucket(request: Request,
+                 amount: float = Form(...),  # required
+                 description: str = Form(...),  # required
+                 payedby: str = Form(...),  # required
+                 sharedby: Optional[List[str]] = Form([])  # optional, defaults to empty list
+                 ):
+
+    print(amount)
+    print(description)
+    print(payedby)
+    print(sharedby)
+
+    return templates.TemplateResponse("/new/bucket.html", _context(request))
 
 @app.exception_handler(StarletteHTTPException)
 async def custom_404_handler(request: Request, exc: StarletteHTTPException):

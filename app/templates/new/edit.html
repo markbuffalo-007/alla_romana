@@ -1,0 +1,62 @@
+<form hx-post="/bucket/{{ request.path_params.get('bucket') }}/user/{{ request.path_params.get('user') }}/add"
+      hx-target="main"
+      hx-swap="innerHTML"
+>
+    <fieldset>
+        <label>
+            💶 Amount
+            <input
+                    type="number"
+                    name="amount"
+                    placeholder="Amount"
+                    autocomplete="amount"
+                    min="1" max="3000"
+            />
+        </label>
+
+        <label>
+            📝 Description
+            <input
+                    type="text"
+                    name="description"
+                    placeholder="Description"
+                    autocomplete="description"
+                    required
+            />
+        </label>
+
+        <label>
+            🧑 Payed by
+            <select name="payedby" aria-label="Select who paid..." required>
+                <option selected disabled value="">
+                    Select who paid...
+                </option>
+                {% for user_option in users %}
+                <option>{{ user_option }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        👥 Shared by
+        <details class="dropdown">
+                <summary>
+                    Select who shared this expense...
+                </summary>
+                <ul>
+                    {% for user_option in users %}
+                    <li>
+                        <label>
+                            <input type="checkbox" name="sharedby" value="{{ user_option }}"/>
+                            {{ user_option }}
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </details>
+    </fieldset>
+
+    <input
+            type="submit"
+            value="Add"
+    />
+</form>

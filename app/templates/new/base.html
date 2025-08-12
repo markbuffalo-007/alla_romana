@@ -1,0 +1,50 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='dist/output.css') }}">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+    >
+    <script src="{{ url_for('static', path='dist/htmx.min.js') }}"></script>
+
+    <style>
+        /* move the pill when the second radio is active */
+        #tab-balances:checked ~ .slider{
+          transform:translateX(100%);
+        }
+    </style>
+</head>
+<body class="relative container" hx-boost="true">
+<header class="sticky inset-y-0 bg-white/70 backdrop-blur-lg rounded-b-3xl">
+    <nav>
+        <ul>
+            <li><strong>{{ settings.title }}</strong></li>
+        </ul>
+        <ul>
+            <li>
+                <button class="outline contrast flex gap-2.5"
+                        hx-get="/bucket/{{ request.path_params.get('bucket') }}/user/{{ request.path_params.get('user') }}/add"
+                        hx-target="main"
+                        hx-swap="innerHTML"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path fill-rule="evenodd"
+                              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <span>New expense</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="px-4">
+    {% block main %}{% endblock %}
+</main>
+</body>

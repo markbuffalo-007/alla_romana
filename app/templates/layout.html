@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='dist/output.css') }}">
+    <script src="{{ url_for('static', path='dist/htmx.min.js') }}"></script>
+
+    <style>
+        /* move the pill when the second radio is active */
+        #tab-balances:checked ~ .slider{
+          transform:translateX(100%);
+        }
+    </style>
+</head>
+<body hx-boost="true" class="{{ 'min-h-screen flex justify-center px-4 pb-16 text-white ' + settings.background }}">
+
+{# ------------------------------------------------------------------ #}
+{# Compute totals – only `expenses`, `trip_name`, and `current_user` #}
+{# need to be injected by the view. #}
+{# ------------------------------------------------------------------ #}
+{% set total = namespace(value=0) %}
+{% set mine = namespace(value=0) %}
+{% for payer, amount, beneficiaries, description in expenses %}
+{% set total.value = total.value + amount %}
+{% if payer == current_user %}
+{% set mine.value = mine.value + amount %}
+{% endif %}
+{% endfor %}
+
+{% from 'fragments/expenses.html' import expenses_fragment %}
+
+<div class="relative w-full max-w-md flex flex-col">
+    <main class="grow">
+        {% block main %}{% endblock %}
+    </main>
+    <nav class="fixed bottom-2 h-16 w-md flex items-center justify-around bg-white/10 backdrop-blur-lg shadow-2xl rounded-3xl text-black">
+      <button class="flex flex-col items-center justify-center px-4 py-2 font-semibold cursor-pointer"
+              hx-get="/bucket/{{ bucket }}/payer/{{ current_user }}/add"
+              hx-target="main"
+              hx-swap="innerHTML"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+          <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
+        </svg>
+        <span>Add</span>
+      </button>
+    </nav>
+</div>
+
+</body>
+</html>

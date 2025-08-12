@@ -3,9 +3,9 @@ from typing import List, Tuple, Dict
 from tricount import Expense, calculate_balances, settle_debts
 
 
-def get_bucket(name: str) -> Tuple[List[Expense], Dict[str, float], List[Tuple[str, str, float]]]:
-    if name == '69':
-        expenses = [
+_DB = {
+    '69': {
+        'expenses': [
             ("Antonio", 20.0, ["Antonio", "Luca"], "Parcheggio (20 €)"),
             ("Antonio", 10.0, ["Antonio", "Luca", "Valentino"], "Autostrada (10 €)"),
             ("Antonio", 23.0, ["Antonio", "Luca", "Valentino"], "Benzina (23 €)"),
@@ -27,8 +27,15 @@ def get_bucket(name: str) -> Tuple[List[Expense], Dict[str, float], List[Tuple[s
             ("Antonio", 65, ["Antonio", "Luca", "Valentino"], "Benzina andata/ritorno"),
             ("Antonio", 47, ["Antonio", "Valentino"], "Pranzo Punta Prosciutto"),
             ("Antonio", 38.8, ["Antonio", "Luca", "Valentino"], "Pedaggio ritorno (38,80 €)"),
-        ]
-        net = calculate_balances(expenses)
+        ],
+        'users': ["Antonio", "Luca", "Valentino"]
+    }
+}
+
+
+def get_bucket(name: str) -> Tuple[List[Expense], Dict[str, float], List[Tuple[str, str, float]], List[str]]:
+    if name in _DB.keys():
+        net = calculate_balances(_DB.get(name)['expenses'])
         settlements = settle_debts(net)
-        return expenses, net, settlements
+        return _DB.get(name)['expenses'], net, settlements, _DB.get(name)['users']
     raise KeyError(f'No bucket found for {name}')
